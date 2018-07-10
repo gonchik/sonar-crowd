@@ -27,58 +27,72 @@ import org.sonar.api.config.Settings;
  */
 public class CrowdConfiguration implements ServerExtension {
 
-  static final String KEY_CROWD_URL = "crowd.url";
-  static final String KEY_CROWD_APP_NAME = "crowd.application";
-  static final String KEY_CROWD_APP_PASSWORD = "crowd.password";
-  static final String FALLBACK_NAME = "sonar";
-  private final Settings settings;
+    static final String KEY_CROWD_URL = "crowd.url";
+    static final String KEY_CROWD_APP_NAME = "crowd.application";
+    static final String KEY_CROWD_APP_PASSWORD = "crowd.password";
+    static final String COOKIE_DOMAIN = "cookie.domain";
+    static final String FALLBACK_NAME = "sonar";
+    static final String COOKIE_DOMAIN_FALLBACK = "";
+    static final String APPLICATION_LOGIN_URL = "application.login.url";
+    private final Settings settings;
 
-  /**
-   * Creates new instance of CrowdConfiguration.
-   *
-   * @param configuration configuration
-   */
-  public CrowdConfiguration(Settings settings) {
-    this.settings = settings;
-  }
-
-  private String get(String key, Settings settings, String fallback) {
-    String value = settings.getString(key);
-    if (value == null) {
-      return fallback;
+    /**
+     * Creates new instance of CrowdConfiguration.
+     *
+     * @param configuration configuration
+     */
+    public CrowdConfiguration(Settings settings) {
+        this.settings = settings;
     }
-    return value;
-  }
 
-  private String getAndValidate(String key, Settings settings) {
-    String value = settings.getString(key);
-    if (value == null) {
-      throw new IllegalArgumentException(key + " is not set");
+    private String get(String key, Settings settings, String fallback) {
+        String value = settings.getString(key);
+        if (value == null) {
+            return fallback;
+        }
+        return value;
     }
-    return value;
-  }
 
-  /**
-   * The name that the application will use when authenticating with the Crowd server.<br />
-   * Uses the settings key {@value #KEY_CROWD_APP_NAME}
-   */
-  public String getCrowdApplicationName() {
-    return get(KEY_CROWD_APP_NAME, settings, FALLBACK_NAME);
-  }
+    private String getAndValidate(String key, Settings settings) {
+        String value = settings.getString(key);
+        if (value == null) {
+            throw new IllegalArgumentException(key + " is not set");
+        }
+        return value;
+    }
 
-  /**
-   * The password that the application will use when authenticating with the Crowd server.<br />
-   * Uses the settings key {@value #KEY_CROWD_APP_PASSWORD}
-   */
-  public String getCrowdApplicationPassword() {
-    return getAndValidate(KEY_CROWD_APP_PASSWORD, settings);
-  }
+    /**
+     * The name that the application will use when authenticating with the Crowd server.<br />
+     * Uses the settings key {@value #KEY_CROWD_APP_NAME}
+     */
+    public String getCrowdApplicationName() {
+        return get(KEY_CROWD_APP_NAME, settings, FALLBACK_NAME);
+    }
 
-  /**
-   * The base URL of the crowd server, e.g. {@linkplain http://127.0.0.1:8095/crowd}.<br />
-   * Uses the settings key {@value #KEY_CROWD_URL}
-   */
-  public String getCrowdUrl() {
-    return getAndValidate(KEY_CROWD_URL, settings);
-  }
+    /**
+     * The name of the cookie the application uses after authentication.<br />
+     */
+    public String getCookieDomain() {
+        return get(COOKIE_DOMAIN, settings, COOKIE_DOMAIN_FALLBACK);
+    }
+
+    /**
+     * The password that the application will use when authenticating with the Crowd server.<br />
+     * Uses the settings key {@value #KEY_CROWD_APP_PASSWORD}
+     */
+    public String getCrowdApplicationPassword() {
+        return getAndValidate(KEY_CROWD_APP_PASSWORD, settings);
+    }
+
+    /**
+     * The base URL of the crowd server, e.g. {@linkplain http://127.0.0.1:8095/crowd}.<br />
+     * Uses the settings key {@value #KEY_CROWD_URL}
+     */
+    public String getCrowdUrl() {
+        return getAndValidate(KEY_CROWD_URL, settings);
+    }
+
+    public String getApplicationLoginUrl() {
+        return getAndValidate(APPLICATION_LOGIN_URL, settings);
+    }
 }

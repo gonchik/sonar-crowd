@@ -19,6 +19,16 @@
  */
 package org.sonar.plugins.crowd;
 
+import java.util.Properties;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.sonar.api.security.Authenticator;
+import org.sonar.api.security.ExternalGroupsProvider;
+import org.sonar.api.security.ExternalUsersProvider;
+import org.sonar.api.security.SecurityRealm;
+import org.sonar.api.utils.SonarException;
+
 import com.atlassian.crowd.exception.ApplicationPermissionException;
 import com.atlassian.crowd.exception.InvalidAuthenticationException;
 import com.atlassian.crowd.exception.OperationFailedException;
@@ -26,15 +36,6 @@ import com.atlassian.crowd.integration.rest.service.factory.RestCrowdClientFacto
 import com.atlassian.crowd.service.client.ClientProperties;
 import com.atlassian.crowd.service.client.ClientPropertiesImpl;
 import com.atlassian.crowd.service.client.CrowdClient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.sonar.api.security.ExternalGroupsProvider;
-import org.sonar.api.security.ExternalUsersProvider;
-import org.sonar.api.security.LoginPasswordAuthenticator;
-import org.sonar.api.security.SecurityRealm;
-import org.sonar.api.utils.SonarException;
-
-import java.util.Properties;
 
 /**
  * Sonar security realm for Atlassian Crowd.
@@ -61,7 +62,7 @@ public class CrowdRealm extends SecurityRealm {
     // The password that the application will use when authenticating with the Crowd server.
     crowdProperties.setProperty("application.password", configuration.getCrowdApplicationPassword());
     // Crowd will redirect the user to this URL if their authentication token expires or is invalid due to security restrictions.
-    // crowdProperties.setProperty("application.login.url", "");
+    crowdProperties.setProperty("application.login.url", configuration.getApplicationLoginUrl());
     // The URL to use when connecting with the integration libraries to communicate with the Crowd server.
     // crowdProperties.setProperty("crowd.server.url", "");
     // The URL used by Crowd to create the full URL to be sent to users that reset their passwords.
@@ -75,6 +76,8 @@ public class CrowdRealm extends SecurityRealm {
     crowdProperties.setProperty("session.validationinterval", "1");
     // The session key to use when storing a Date value of the user's last authentication.
     crowdProperties.setProperty("session.lastvalidation", "session.lastvalidation");
+    // The Cookie Domain
+    crowdProperties.setProperty("cookie.domain", configuration.getCookieDomain());
     // Perhaps more things to let users to configure in the future
     // (see https://confluence.atlassian.com/display/CROWD/The+crowd.properties+file)
     ClientProperties clientProperties = ClientPropertiesImpl.newInstanceFromProperties(crowdProperties);
@@ -101,12 +104,12 @@ public class CrowdRealm extends SecurityRealm {
       throw new SonarException("Application name and password are incorrect", e);
     } catch (ApplicationPermissionException e) {
       throw new SonarException("The application is not permitted to perform the requested "
-        + "operation on the crowd server", e);
+              + "operation on the crowd server", e);
     }
   }
 
   @Override
-  public LoginPasswordAuthenticator getLoginPasswordAuthenticator() {
+  public Authenticator doGetAuthenticator() {
     return authenticator;
   }
 
