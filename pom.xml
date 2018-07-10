@@ -58,9 +58,14 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.atlassian.crowd.client</groupId>
-            <artifactId>atlassian-crowd-rest-client</artifactId>
-            <version>1.4</version>
+            <groupId>com.atlassian.crowd</groupId>
+            <artifactId>crowd-integration-client-rest</artifactId>
+            <version>3.2.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <version>1.7.25</version>
         </dependency>
         <!-- unit tests -->
         <dependency>
@@ -79,7 +84,11 @@
     <repositories>
         <repository>
             <id>atlassian</id>
-            <url>https://maven.atlassian.com/content/repositories/atlassian-public</url>
+            <url>https://maven.atlassian.com/maven-public</url>
+        </repository>
+        <repository>
+            <id>atlassian-external</id>
+            <url>https://maven.atlassian.com/maven-external</url>
         </repository>
     </repositories>
 

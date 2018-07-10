@@ -72,7 +72,7 @@ public class CrowdConfiguration implements ServerExtension {
     /**
      * The name of the cookie the application uses after authentication.<br />
      */
-    public String getCookieDomain() {
+     public String getCookieDomain() {
         return get(COOKIE_DOMAIN, settings, COOKIE_DOMAIN_FALLBACK);
     }
 
@@ -93,6 +93,6 @@ public class CrowdConfiguration implements ServerExtension {
     }
 
     public String getApplicationLoginUrl() {
-        return getAndValidate(APPLICATION_LOGIN_URL, settings);
+        return getAndValidate(KEY_CROWD_URL, settings);
     }
 }
