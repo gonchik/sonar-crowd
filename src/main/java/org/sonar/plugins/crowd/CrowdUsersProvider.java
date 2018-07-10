@@ -25,22 +25,22 @@ import com.atlassian.crowd.exception.OperationFailedException;
 import com.atlassian.crowd.exception.UserNotFoundException;
 import com.atlassian.crowd.model.user.User;
 import com.atlassian.crowd.service.client.CrowdClient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.sonar.api.security.ExternalUsersProvider;
 import org.sonar.api.security.UserDetails;
 import org.sonar.api.utils.SonarException;
+import org.sonar.api.utils.log.Logger;
+import org.sonar.api.utils.log.Loggers;
 
 /**
  * External users provider implementation for Atlassian Crowd. 
  */
 public class CrowdUsersProvider extends ExternalUsersProvider {
 
-  private static final Logger LOG = LoggerFactory.getLogger(CrowdUsersProvider.class);
+  private static final Logger LOG = Loggers.get(CrowdUsersProvider.class);
 
   private final CrowdClient crowdClient;
 
-  public CrowdUsersProvider(CrowdClient crowdClient) {
+  CrowdUsersProvider(CrowdClient crowdClient) {
     this.crowdClient = crowdClient;
   }
 

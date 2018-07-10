@@ -19,16 +19,6 @@
  */
 package org.sonar.plugins.crowd;
 
-import java.util.Properties;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.sonar.api.security.Authenticator;
-import org.sonar.api.security.ExternalGroupsProvider;
-import org.sonar.api.security.ExternalUsersProvider;
-import org.sonar.api.security.SecurityRealm;
-import org.sonar.api.utils.SonarException;
-
 import com.atlassian.crowd.exception.ApplicationPermissionException;
 import com.atlassian.crowd.exception.InvalidAuthenticationException;
 import com.atlassian.crowd.exception.OperationFailedException;
@@ -36,13 +26,22 @@ import com.atlassian.crowd.integration.rest.service.factory.RestCrowdClientFacto
 import com.atlassian.crowd.service.client.ClientProperties;
 import com.atlassian.crowd.service.client.ClientPropertiesImpl;
 import com.atlassian.crowd.service.client.CrowdClient;
+import org.sonar.api.security.Authenticator;
+import org.sonar.api.security.ExternalGroupsProvider;
+import org.sonar.api.security.ExternalUsersProvider;
+import org.sonar.api.security.SecurityRealm;
+import org.sonar.api.utils.SonarException;
+import org.sonar.api.utils.log.Logger;
+import org.sonar.api.utils.log.Loggers;
+
+import java.util.Properties;
 
 /**
  * Sonar security realm for Atlassian Crowd.
  */
 public class CrowdRealm extends SecurityRealm {
 
-  private static final Logger LOG = LoggerFactory.getLogger(CrowdRealm.class);
+  private static final Logger LOG = Loggers.get(CrowdRealm.class);
 
   private final CrowdConfiguration crowdConfiguration;
 

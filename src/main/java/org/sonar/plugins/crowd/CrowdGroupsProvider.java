@@ -19,17 +19,6 @@
  */
 package org.sonar.plugins.crowd;
 
-import static com.google.common.collect.Collections2.transform;
-
-import java.util.Collection;
-import java.util.LinkedHashSet;
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.sonar.api.security.ExternalGroupsProvider;
-import org.sonar.api.utils.SonarException;
-
 import com.atlassian.crowd.exception.ApplicationPermissionException;
 import com.atlassian.crowd.exception.InvalidAuthenticationException;
 import com.atlassian.crowd.exception.OperationFailedException;
@@ -38,13 +27,23 @@ import com.atlassian.crowd.model.group.Group;
 import com.atlassian.crowd.service.client.CrowdClient;
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
+import org.sonar.api.security.ExternalGroupsProvider;
+import org.sonar.api.utils.SonarException;
+import org.sonar.api.utils.log.Logger;
+import org.sonar.api.utils.log.Loggers;
+
+import java.util.Collection;
+import java.util.LinkedHashSet;
+import java.util.List;
+
+import static com.google.common.collect.Collections2.transform;
 
 /**
  * External groups provider implementation for Atlassian Crowd.
  */
 public class CrowdGroupsProvider extends ExternalGroupsProvider {
 
-  private static final Logger LOG = LoggerFactory.getLogger(CrowdGroupsProvider.class);
+  private static final Logger LOG = Loggers.get(CrowdGroupsProvider.class);
   private static final int PAGING_SIZE = 100; // no idea what a reasonable size might be
   private static final Function<Group, String> GROUP_TO_STRING = new Function<Group, String>() {
     public String apply(Group input) {

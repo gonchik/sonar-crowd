@@ -19,9 +19,6 @@
  */
 package org.sonar.plugins.crowd;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.sonar.api.security.Authenticator;
 import com.atlassian.crowd.exception.ApplicationPermissionException;
 import com.atlassian.crowd.exception.ExpiredCredentialException;
 import com.atlassian.crowd.exception.InactiveAccountException;
@@ -29,17 +26,20 @@ import com.atlassian.crowd.exception.InvalidAuthenticationException;
 import com.atlassian.crowd.exception.OperationFailedException;
 import com.atlassian.crowd.exception.UserNotFoundException;
 import com.atlassian.crowd.service.client.CrowdClient;
+import org.sonar.api.security.Authenticator;
+import org.sonar.api.utils.log.Logger;
+import org.sonar.api.utils.log.Loggers;
 
 /**
  * @author Evgeny Mandrikov
  */
 public class CrowdAuthenticator extends Authenticator {
 
-    private static final Logger LOG = LoggerFactory.getLogger(CrowdAuthenticator.class);
+    private static final Logger LOG = Loggers.get(CrowdAuthenticator.class);
 
     private final CrowdClient client;
 
-    public CrowdAuthenticator(CrowdClient client) {
+    CrowdAuthenticator(CrowdClient client) {
         this.client = client;
     }
 
